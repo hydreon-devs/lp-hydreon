@@ -40,12 +40,11 @@ const Navbar = () => {
           </div>
 
           {/* CTA Button */}
-          <div className="hidden md:block">
+          <a href="https://wa.me/573234519204" target="_blank" rel="noopener noreferrer" className="hidden md:block">
             <Button variant="hero" size="lg">
               Empezar Proyecto
             </Button>
-          </div>
-
+          </a>
           {/* Mobile Menu Button */}
           <button
             className="md:hidden text-foreground p-2"
