@@ -1,73 +1,108 @@
-# Welcome to your Lovable project
+# Hydreon Landing Page
 
-## Project info
+Landing page corporativa de Hydreon Studios, empresa de desarrollo de software ubicada en Medellín, Colombia. Presenta los servicios, equipo y canales de contacto del estudio.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+---
 
-## How can I edit this code?
+## Requisitos Previos
 
-There are several ways of editing your application.
+Antes de empezar, asegurate de tener instalado:
 
-**Use Lovable**
+- [Node.js >= 18](https://nodejs.org/)
+- npm (incluido con Node.js)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## Instalación
 
-**Use your preferred IDE**
+1. Cloná el repositorio:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+   ```bash
+   git clone https://github.com/studios-hydreon/hydreon-landing-page.git
+   cd hydreon-landing-page
+   ```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+2. Instalá las dependencias:
 
-Follow these steps:
+   ```bash
+   npm install
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+3. Levantá el proyecto:
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+   ```bash
+   npm run dev
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+   El proyecto estará disponible en `http://localhost:8080`.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+---
+
+## Comandos Útiles
+
+| Comando | Descripción |
+| :--- | :--- |
+| `npm run dev` | Levantar el servidor de desarrollo |
+| `npm run build` | Generar la build de producción |
+| `npm run build:dev` | Generar la build en modo development |
+| `npm run lint` | Ejecutar ESLint |
+| `npm run preview` | Vista previa del build de producción |
+
+---
+
+## Estructura del Proyecto
+
+```
+hydreon-landing-page/
+├── src/
+│   ├── assets/          # Imágenes y recursos estáticos del proyecto
+│   ├── components/
+│   │   ├── ui/          # Componentes base de shadcn/ui
+│   │   ├── Navbar.tsx
+│   │   ├── HeroSection.tsx
+│   │   ├── ServicesSection.tsx
+│   │   ├── AboutSection.tsx
+│   │   ├── ContactSection.tsx
+│   │   └── Footer.tsx
+│   ├── hooks/           # Custom hooks (toast, mobile detection)
+│   ├── lib/             # Utilidades (cn para clases)
+│   ├── pages/           # Páginas de la app (Index, NotFound)
+│   ├── App.tsx          # Router y providers
+│   ├── main.tsx         # Entry point
+│   └── index.css        # Estilos globales y variables CSS
+├── public/              # Archivos estáticos (favicon, robots.txt)
+├── .gitignore
+├── package.json
+├── vite.config.ts
+├── tailwind.config.ts
+├── tsconfig.json
+├── components.json      # Configuración de shadcn/ui
+└── README.md
 ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Tecnologías
 
-**Use GitHub Codespaces**
+- **Vite 5** - Bundler y servidor de desarrollo
+- **React 18** - Librería de UI
+- **TypeScript 5** - Tipado estático
+- **Tailwind CSS 3** - Framework de estilos
+- **shadcn/ui** - Componentes UI basados en Radix UI
+- **React Router 6** - Navegación SPA
+- **Lucide React** - Iconografía
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+## Despliegue
 
-This project is built with:
+El proyecto se despliega en **Lovable**.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- **Rama de deploy:** `main`
+- **Proceso:** Automático por push a main
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## Enlaces Útiles
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- [Repositorio en GitHub](https://github.com/studios-hydreon/hydreon-landing-page)
