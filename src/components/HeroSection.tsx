@@ -42,15 +42,16 @@ const HeroSection = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in" style={{ animationDelay: "0.6s" }}>
-            <Button variant="hero" size="xl" className="group">
-              Comienza tu proyecto
-              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-            </Button>
+            <a href="https://wa.me/573234519204" target="_blank" rel="noopener noreferrer">
+              <Button variant="hero" size="xl" className="group">
+                Comienza tu proyecto
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </a>
             <Button variant="heroOutline" size="xl">
               Ver portafolio
             </Button>
           </div>
-
           {/* Stats / Social Proof */}
           <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-12 mt-16 animate-fade-in" style={{ animationDelay: "0.8s" }}>
             <div className="flex items-center gap-3">
