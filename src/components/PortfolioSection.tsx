@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import gestorCotizaciones from "@/assets/gestor-cotizaciones.png";
 import { ExternalLink, Layers, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Dialog,
@@ -33,7 +34,7 @@ const projects: Project[] = [
     fullDescription:
       "Desarrollamos una plataforma web completa de gestión de cotizaciones para el uso interno del equipo de CJ Producciones. La solución redujo en un 70% el tiempo administrativo.",
     tags: ["React", "Vite", "Supabase"],
-    image: "/src/assets/gestor-cotizaciones.png",
+    image: gestorCotizaciones,
     demoUrl: "https://cotizaciones-demo.hydreon.com.co/login",
   }
 ];
