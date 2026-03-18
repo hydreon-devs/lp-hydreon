@@ -16,6 +16,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+const WHATSAPP_NUMBER = "573234519204";
+
 interface Project {
   title: string;
   client: string;
@@ -23,19 +25,17 @@ interface Project {
   fullDescription: string;
   tags: string[];
   image: string;
-  demoUrl: string;
 }
 
 const projects: Project[] = [
   {
-    title: "Plataforma de Gestión de cotizaciones",
+    title: "Gestor de Cotizaciones",
     client: "CJ Producciones",
     shortDescription: "Sistema web para administración de cotizaciones y clientes en tiempo real.",
     fullDescription:
       "Desarrollamos una plataforma web completa de gestión de cotizaciones para el uso interno del equipo de CJ Producciones. La solución redujo en un 70% el tiempo administrativo.",
-    tags: ["React", "Vite", "Supabase"],
+    tags: ["React", "Vite", "Supabase", "Tailwind CSS", "PostgresSQL"],
     image: gestorCotizaciones,
-    demoUrl: "https://cotizaciones-demo.hydreon.com.co/login",
   }
 ];
 
@@ -273,9 +273,13 @@ const PortfolioSection = () => {
                 </p>
 
                 <div className="pt-2">
-                  <a href={selectedProject.demoUrl} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hola, quiero solicitar la demo del proyecto ${selectedProject.title}`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <Button variant="hero" size="lg" className="group w-full sm:w-auto">
-                      Ver demo
+                      Solicitar demo
                       <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </Button>
                   </a>
