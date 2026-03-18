@@ -48,9 +48,11 @@ const HeroSection = () => {
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </a>
-            <Button variant="heroOutline" size="xl">
-              Ver portafolio
-            </Button>
+            <a href="#portafolio">
+              <Button variant="heroOutline" size="xl">
+                Ver portafolio
+              </Button>
+            </a>
           </div>
           {/* Stats / Social Proof */}
           <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-12 mt-16 animate-fade-in" style={{ animationDelay: "0.8s" }}>
