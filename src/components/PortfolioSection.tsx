@@ -1,6 +1,17 @@
 import { useState, useEffect } from "react";
-import gestorCotizaciones from "@/assets/gestor-cotizaciones.png";
 import { ExternalLink, Layers, ChevronLeft, ChevronRight } from "lucide-react";
+
+const portfolioImages = import.meta.glob("../assets/portfolio/**/*.{png,jpg,webp}", {
+  eager: true,
+  import: "default",
+}) as Record<string, string>;
+
+function getProjectImages(projectFolder: string): string[] {
+  return Object.entries(portfolioImages)
+    .filter(([path]) => path.includes(`/portfolio/${projectFolder}/`))
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([, url]) => url);
+}
 import {
   Dialog,
   DialogContent,
@@ -24,7 +35,7 @@ interface Project {
   shortDescription: string;
   fullDescription: string;
   tags: string[];
-  image: string;
+  images: string[];
 }
 
 const projects: Project[] = [
@@ -35,9 +46,70 @@ const projects: Project[] = [
     fullDescription:
       "Desarrollamos una plataforma web completa de gestión de cotizaciones para el uso interno del equipo de CJ Producciones. La solución redujo en un 70% el tiempo administrativo.",
     tags: ["React", "Vite", "Supabase", "Tailwind CSS", "PostgresSQL"],
-    image: gestorCotizaciones,
+    images: getProjectImages("gestor-cotizaciones"),
   }
 ];
+
+const ProjectImageCarousel = ({ images, title }: { images: string[]; title: string }) => {
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+    setCurrent(api.selectedScrollSnap());
+    api.on("select", () => setCurrent(api.selectedScrollSnap()));
+  }, [api]);
+
+  return (
+    <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
+      <Carousel setApi={setApi} opts={{ loop: true }} className="w-full h-full">
+        <CarouselContent className="h-full ml-0">
+          {images.map((src, i) => (
+            <CarouselItem key={i} className="h-full pl-0">
+              <img
+                src={src}
+                alt={`${title} - imagen ${i + 1}`}
+                className="w-full h-full object-cover"
+              />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+
+      <button
+        onClick={() => api?.scrollPrev()}
+        className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/60 transition-colors"
+        aria-label="Imagen anterior"
+      >
+        <ChevronLeft className="w-4 h-4" />
+      </button>
+
+      <button
+        onClick={() => api?.scrollNext()}
+        className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/60 transition-colors"
+        aria-label="Imagen siguiente"
+      >
+        <ChevronRight className="w-4 h-4" />
+      </button>
+
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5">
+        {images.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => api?.scrollTo(i)}
+            className={cn(
+              "rounded-full transition-all duration-300",
+              i === current ? "w-5 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/50 hover:bg-white/75"
+            )}
+            aria-label={`Ir a imagen ${i + 1}`}
+          />
+        ))}
+      </div>
+
+      <div className="absolute inset-0 bg-gradient-to-t from-card/60 to-transparent pointer-events-none" />
+    </div>
+  );
+};
 
 const ProjectCard = ({
   project,
@@ -57,7 +129,7 @@ const ProjectCard = ({
     style={{ aspectRatio: "16/10" }}
   >
     <img
-      src={project.image}
+      src={project.images[0]}
       alt={project.title}
       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
       onError={(e) => {
@@ -228,24 +300,10 @@ const PortfolioSection = () => {
         <DialogContent className="sm:max-w-lg bg-card border-border/50 p-0 overflow-hidden gap-0">
           {selectedProject && (
             <>
-              <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16/9" }}>
-                <img
-                  src={selectedProject.image}
-                  alt={selectedProject.title}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = "none";
-                    target.nextElementSibling?.classList.remove("hidden");
-                  }}
-                />
-                <div className="hidden w-full h-full bg-gradient-to-br from-card to-background/80 flex items-center justify-center">
-                  <div className="w-20 h-20 rounded-3xl bg-gradient-primary flex items-center justify-center text-primary-foreground opacity-30">
-                    <Layers className="w-10 h-10" />
-                  </div>
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-card/60 to-transparent" />
-              </div>
+              <ProjectImageCarousel
+                images={selectedProject.images}
+                title={selectedProject.title}
+              />
 
               <div className="p-6 space-y-4">
                 <DialogHeader className="space-y-1">
