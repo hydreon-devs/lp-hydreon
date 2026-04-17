@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ExternalLink, Layers, ChevronLeft, ChevronRight } from "lucide-react";
 
 const portfolioImages = import.meta.glob("../assets/portfolio/**/*.{png,jpg,webp}", {
@@ -12,6 +12,7 @@ function getProjectImages(projectFolder: string): string[] {
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([, url]) => url);
 }
+
 import {
   Dialog,
   DialogContent,
@@ -36,17 +37,19 @@ interface Project {
   fullDescription: string;
   tags: string[];
   images: string[];
+  impact?: { value: string; label: string };
 }
 
 const projects: Project[] = [
   {
     title: "Gestor de Cotizaciones",
     client: "CJ Producciones",
-    shortDescription: "Sistema web para administración de cotizaciones y clientes en tiempo real.",
+    shortDescription: "Sistema web para administración de cotizaciones y clientes.",
     fullDescription:
-      "Desarrollamos una plataforma web completa de gestión de cotizaciones para el uso interno del equipo de CJ Producciones. La solución redujo en un 70% el tiempo administrativo.",
-    tags: ["React", "Vite", "Supabase", "Tailwind CSS", "PostgresSQL"],
+      "Desarrollamos una plataforma web completa de gestión de cotizaciones para el uso interno del equipo de CJ Producciones. La solución redujo en un 80% el tiempo administrativo del personal encargado en la creación de cotizaciones para sus clientes.",
+    tags: ["React", "Vite", "Supabase"],
     images: getProjectImages("gestor-cotizaciones"),
+    impact: { value: "80%", label: "menos tiempo administrativo" },
   }
 ];
 
@@ -111,7 +114,7 @@ const ProjectImageCarousel = ({ images, title }: { images: string[]; title: stri
   );
 };
 
-const ProjectCard = ({
+const ProjectFeatureCard = ({
   project,
   onClick,
 }: {
@@ -121,61 +124,69 @@ const ProjectCard = ({
   <button
     onClick={onClick}
     className={cn(
-      "group relative w-full overflow-hidden rounded-2xl cursor-pointer text-left",
-      "border border-border/40 transition-all duration-500",
-      "hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/15 hover:border-primary/40",
+      "group w-full overflow-hidden rounded-2xl text-left cursor-pointer",
+      "border border-border/40 bg-card/30 backdrop-blur-sm",
+      "flex flex-col md:flex-row",
+      "transition-all duration-150 hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
     )}
-    style={{ aspectRatio: "16/10" }}
   >
-    <img
-      src={project.images[0]}
-      alt={project.title}
-      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-      onError={(e) => {
-        const target = e.target as HTMLImageElement;
-        target.style.display = "none";
-        target.nextElementSibling?.classList.remove("hidden");
-      }}
-    />
-
-    <div className="hidden absolute inset-0 bg-gradient-to-br from-card/80 to-background/90 flex items-center justify-center">
-      <div className="w-16 h-16 rounded-2xl bg-gradient-primary flex items-center justify-center text-primary-foreground opacity-40">
-        <Layers className="w-8 h-8" />
+    {/* Image */}
+    <div className="relative w-full md:w-1/2 shrink-0 overflow-hidden" style={{ aspectRatio: "16/10" }}>
+      <img
+        src={project.images[0]}
+        alt={project.title}
+        className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+        onError={(e) => {
+          const target = e.target as HTMLImageElement;
+          target.style.display = "none";
+          (target.nextElementSibling as HTMLElement)?.classList.remove("hidden");
+        }}
+      />
+      <div className="hidden absolute inset-0 bg-gradient-to-br from-card/80 to-background/90 items-center justify-center">
+        <Layers className="w-10 h-10 text-primary/40" />
       </div>
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card/60 hidden md:block" />
     </div>
 
-    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-    <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/30" />
+    {/* Content */}
+    <div className="flex flex-col justify-center gap-5 p-8 md:w-1/2">
+      <p className="text-primary text-xs font-semibold uppercase tracking-widest">
+        {project.client}
+      </p>
 
-    <div className="absolute inset-x-0 bottom-0 p-5 flex flex-col gap-2.5">
-      <div className="flex flex-wrap gap-1.5">
+      <div>
+        <h3 className="text-2xl md:text-3xl font-bold text-foreground leading-tight mb-2">
+          {project.title}
+        </h3>
+        <p className="text-muted-foreground leading-relaxed">
+          {project.shortDescription}
+        </p>
+      </div>
+
+      {project.impact && (
+        <div className="flex items-baseline gap-2">
+          <span className="text-4xl font-bold text-primary">{project.impact.value}</span>
+          <span className="text-muted-foreground text-sm">{project.impact.label}</span>
+        </div>
+      )}
+
+      <div className="flex flex-wrap gap-2">
         {project.tags.map((tag) => (
           <span
             key={tag}
-            className="px-2 py-0.5 rounded-full text-[11px] font-medium bg-white/10 text-white/80 backdrop-blur-sm border border-white/15"
+            className="px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20"
           >
             {tag}
           </span>
         ))}
       </div>
 
-      <div>
-        <p className="text-white/60 text-xs font-medium uppercase tracking-widest mb-0.5">
-          {project.client}
-        </p>
-        <h3 className="text-white text-lg font-semibold leading-tight">
-          {project.title}
-        </h3>
-      </div>
-
-      <div className="flex items-center gap-1.5 text-primary text-sm font-medium translate-y-1 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+      <div className="flex items-center gap-1.5 text-primary text-sm font-medium opacity-70 transition-opacity duration-300 group-hover:opacity-100">
         <span>Ver proyecto</span>
-        <ExternalLink className="w-3.5 h-3.5" />
+        <ExternalLink className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
       </div>
     </div>
-
-    <div className="absolute inset-0 rounded-2xl ring-0 transition-all duration-500 group-hover:ring-1 group-hover:ring-primary/30" />
   </button>
 );
 
@@ -184,6 +195,8 @@ const PortfolioSection = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
+  const [visible, setVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (!api) return;
@@ -192,8 +205,19 @@ const PortfolioSection = () => {
     api.on("select", () => setCurrent(api.selectedScrollSnap()));
   }, [api]);
 
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="portafolio" className="py-24 px-4 relative overflow-hidden">
+    <section ref={sectionRef} id="portafolio" className="py-24 px-4 relative overflow-hidden">
       <div className="absolute inset-0 bg-hero" />
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/10 rounded-full blur-3xl animate-pulse-glow"
@@ -204,8 +228,13 @@ const PortfolioSection = () => {
         style={{ animationDelay: "1.5s" }}
       />
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center mb-16">
+      <div className="max-w-5xl mx-auto relative z-10">
+        <div
+          className={cn(
+            "text-center mb-16 transition-all duration-700",
+            visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          )}
+        >
           <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
             Nuestro Trabajo
           </span>
@@ -220,90 +249,78 @@ const PortfolioSection = () => {
           </p>
         </div>
 
-        {projects.length <= 3 ? (
-          <div
-            className={cn(
-              "grid gap-5 py-4 mx-auto",
-              projects.length === 1 && "grid-cols-1 max-w-md",
-              projects.length === 2 && "grid-cols-1 md:grid-cols-2 max-w-2xl",
-              projects.length === 3 && "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
-            )}
-          >
+        <div
+          className={cn(
+            "transition-all duration-700 delay-300",
+            visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          )}
+        >
+        <Carousel
+          setApi={setApi}
+          opts={{ loop: true, align: "center" }}
+          className="w-full"
+        >
+          <CarouselContent className="py-4">
             {projects.map((project, index) => (
-              <ProjectCard
-                key={index}
-                project={project}
-                onClick={() => setSelectedProject(project)}
-              />
+              <CarouselItem key={index} className="basis-full">
+                <ProjectFeatureCard
+                  project={project}
+                  onClick={() => setSelectedProject(project)}
+                />
+              </CarouselItem>
             ))}
-          </div>
-        ) : (
-          <>
-            <Carousel
-              setApi={setApi}
-              opts={{ loop: true, align: "start" }}
-              className="w-full"
+          </CarouselContent>
+        </Carousel>
+        </div>
+
+        {projects.length > 1 && (
+          <div className="flex items-center justify-center gap-6 mt-8">
+            <button
+              onClick={() => api?.scrollPrev()}
+              className="w-10 h-10 rounded-full border border-border/50 bg-card/40 backdrop-blur-sm flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-card/70 transition-all duration-300"
+              aria-label="Proyecto anterior"
             >
-              <CarouselContent className="-ml-4 py-4">
-                {projects.map((project, index) => (
-                  <CarouselItem
-                    key={index}
-                    className="pl-4 basis-full md:basis-1/2 lg:basis-1/3"
-                  >
-                    <ProjectCard
-                      project={project}
-                      onClick={() => setSelectedProject(project)}
-                    />
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-            </Carousel>
+              <ChevronLeft className="w-5 h-5" />
+            </button>
 
-            <div className="flex items-center justify-center gap-6 mt-8">
-              <button
-                onClick={() => api?.scrollPrev()}
-                className="w-10 h-10 rounded-full border border-border/50 bg-card/40 backdrop-blur-sm flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-card/70 transition-all duration-300"
-                aria-label="Proyecto anterior"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-
-              <div className="flex items-center gap-2">
-                {Array.from({ length: count }).map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => api?.scrollTo(i)}
-                    className={cn(
-                      "rounded-full transition-all duration-300",
-                      i === current
-                        ? "w-6 h-2 bg-primary"
-                        : "w-2 h-2 bg-border hover:bg-muted-foreground"
-                    )}
-                    aria-label={`Ir al proyecto ${i + 1}`}
-                  />
-                ))}
-              </div>
-
-              <button
-                onClick={() => api?.scrollNext()}
-                className="w-10 h-10 rounded-full border border-border/50 bg-card/40 backdrop-blur-sm flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-card/70 transition-all duration-300"
-                aria-label="Proyecto siguiente"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
+            <div className="flex items-center gap-2">
+              {Array.from({ length: count }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => api?.scrollTo(i)}
+                  className={cn(
+                    "rounded-full transition-all duration-300",
+                    i === current
+                      ? "w-6 h-2 bg-primary"
+                      : "w-2 h-2 bg-border hover:bg-muted-foreground"
+                  )}
+                  aria-label={`Ir al proyecto ${i + 1}`}
+                />
+              ))}
             </div>
-          </>
+
+            <button
+              onClick={() => api?.scrollNext()}
+              className="w-10 h-10 rounded-full border border-border/50 bg-card/40 backdrop-blur-sm flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-card/70 transition-all duration-300"
+              aria-label="Proyecto siguiente"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
         )}
       </div>
 
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-        <DialogContent className="sm:max-w-lg bg-card border-border/50 p-0 overflow-hidden gap-0">
+        <DialogContent className="w-[calc(100%-2rem)] sm:max-w-2xl bg-card border-border/50 p-0 gap-0 max-h-[90vh] overflow-y-auto">
           {selectedProject && (
             <>
               <ProjectImageCarousel
                 images={selectedProject.images}
                 title={selectedProject.title}
               />
+
+              {/* Separator with gradient */}
+              <div className="h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
               <div className="p-6 space-y-4">
                 <DialogHeader className="space-y-1">
@@ -314,6 +331,17 @@ const PortfolioSection = () => {
                     {selectedProject.title}
                   </DialogTitle>
                 </DialogHeader>
+
+                {selectedProject.impact && (
+                  <div className="flex items-baseline gap-2 py-1">
+                    <span className="text-3xl font-bold text-primary">{selectedProject.impact.value}</span>
+                    <span className="text-muted-foreground text-sm">{selectedProject.impact.label}</span>
+                  </div>
+                )}
+
+                <p className="text-muted-foreground leading-relaxed">
+                  {selectedProject.fullDescription}
+                </p>
 
                 <div className="flex flex-wrap gap-2">
                   {selectedProject.tags.map((tag) => (
@@ -326,18 +354,16 @@ const PortfolioSection = () => {
                   ))}
                 </div>
 
-                <p className="text-muted-foreground leading-relaxed">
-                  {selectedProject.fullDescription}
-                </p>
-
+                {/* CTA — full width, prominent */}
                 <div className="pt-2">
                   <a
                     href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hola, quiero solicitar la demo del proyecto ${selectedProject.title}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="block"
                   >
-                    <Button variant="hero" size="lg" className="group w-full sm:w-auto">
-                      Solicitar demo
+                    <Button variant="hero" size="lg" className="group w-full">
+                      Quiero algo así para mi negocio
                       <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </Button>
                   </a>

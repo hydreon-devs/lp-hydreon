@@ -10,14 +10,6 @@ const HeroSection = () => {
         <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse-glow" />
         <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "1.5s" }} />
         
-        {/* Grid Pattern */}
-        <div 
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)`,
-            backgroundSize: "60px 60px",
-          }}
-        />
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
@@ -30,27 +22,26 @@ const HeroSection = () => {
 
           {/* Main Headline */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            Transformamos ideas en{" "}
-            <span className="text-gradient">experiencias digitales</span>{" "}
-            extraordinarias
+            Tu negocio merece{" "}
+            <span className="text-gradient">software a medida</span>
           </h1>
 
           {/* Subheadline */}
           <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-            Somos expertos en desarrollo de software a medida. Creamos soluciones tecnológicas que impulsan tu negocio al siguiente nivel.
+            Desarrollamos plataformas web, sistemas de gestión y automatizaciones que reducen costos y hacen crecer tu empresa.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in" style={{ animationDelay: "0.6s" }}>
             <a href="https://wa.me/573234519204" target="_blank" rel="noopener noreferrer">
-              <Button variant="hero" size="xl" className="group">
-                Comienza tu proyecto
+              <Button variant="hero" size="xl" className="group shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-shadow duration-300">
+                Hablemos de tu proyecto
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </a>
             <a href="#portafolio">
               <Button variant="heroOutline" size="xl">
-                Ver portafolio
+                Ver nuestro trabajo
               </Button>
             </a>
           </div>

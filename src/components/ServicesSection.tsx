@@ -7,6 +7,8 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
+import { cn } from "@/lib/utils";
 
 interface Service {
   icon: React.ReactNode;
@@ -67,21 +69,27 @@ const services: Service[] = [
   },
 ];
 
-const ServiceCard = ({ service, onClick }: { service: Service; onClick: () => void }) => (
+const ServiceCard = ({ service, onClick, index, visible }: { service: Service; onClick: () => void; index: number; visible: boolean }) => (
   <div
     onClick={onClick}
-    className="group relative p-6 rounded-2xl bg-card/30 border border-border/50 backdrop-blur-sm cursor-pointer transition-all duration-300 hover:bg-card/50 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1"
+    className={cn(
+      "group relative p-6 rounded-2xl bg-card/30 border border-border/50 backdrop-blur-sm cursor-pointer",
+      "transition-all duration-300 hover:bg-card/50 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1",
+      "opacity-0 translate-y-8",
+      visible && "opacity-100 translate-y-0"
+    )}
+    style={{ transitionDuration: "600ms", transitionDelay: visible ? `${index * 100 + 200}ms` : "0ms" }}
   >
     <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/10 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-    
+
     <div className="relative z-10 text-center">
       <div className="w-14 h-14 rounded-xl bg-gradient-primary flex items-center justify-center text-primary-foreground mb-4 group-hover:scale-110 transition-transform duration-300 mx-auto">
         {service.icon}
       </div>
-      
+
       <h3 className="text-xl font-semibold text-foreground mb-2">{service.title}</h3>
       <p className="text-muted-foreground text-sm leading-relaxed">{service.shortDescription}</p>
-      
+
       <div className="mt-4 flex items-center justify-center text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         Ver más detalles
         <span className="ml-2 group-hover:translate-x-1 transition-transform duration-200">→</span>
@@ -92,16 +100,21 @@ const ServiceCard = ({ service, onClick }: { service: Service; onClick: () => vo
 
 const ServicesSection = () => {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const { ref, visible } = useScrollReveal();
 
   return (
-    <section id="servicios" className="py-24 px-4 relative overflow-hidden">
-      {/* Background matching hero */}
+    <section ref={ref} id="servicios" className="py-24 px-4 relative overflow-hidden">
       <div className="absolute inset-0 bg-hero" />
       <div className="absolute top-1/4 -right-32 w-80 h-80 bg-secondary/15 rounded-full blur-3xl animate-pulse-glow" />
       <div className="absolute bottom-1/4 -left-32 w-80 h-80 bg-primary/15 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "1s" }} />
-      
+
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center mb-16">
+        <div
+          className={cn(
+            "text-center mb-16 transition-all duration-700",
+            visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          )}
+        >
           <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
             Nuestros Servicios
           </span>
@@ -121,6 +134,8 @@ const ServicesSection = () => {
             <ServiceCard
               key={index}
               service={service}
+              index={index}
+              visible={visible}
               onClick={() => setSelectedService(service)}
             />
           ))}
@@ -140,7 +155,7 @@ const ServicesSection = () => {
                   {selectedService.fullDescription}
                 </DialogDescription>
               </DialogHeader>
-              
+
               <div className="mt-6">
                 <h4 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wider">
                   Características principales
