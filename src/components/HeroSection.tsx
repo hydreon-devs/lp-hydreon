@@ -3,7 +3,7 @@ import { ArrowRight, Zap, CheckCircle, Users, Award } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen bg-hero flex items-center overflow-hidden pt-24">
+    <section className="relative min-h-screen bg-hero flex items-center overflow-hidden pt-20">
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Gradient Orbs */}
