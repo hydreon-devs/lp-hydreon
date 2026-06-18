@@ -50,6 +50,16 @@ const projects: Project[] = [
     tags: ["React", "Vite", "Supabase"],
     images: getProjectImages("gestor-cotizaciones"),
     impact: { value: "80%", label: "menos tiempo administrativo" },
+  },
+  {
+    title: "Landing Page + Mini App D'Fruta Madre",
+    client: "D'Fruta Madre - Fresas con crema",
+    shortDescription: "Landing page para la venta de fresas con crema.",
+    fullDescription:
+      "Desarrollamos una landing page + mini app para armar pedidos y enviar por WhatsApp. La landing page fue diseñada para ser una herramienta de venta directa para el cliente.",
+    tags: ["React", "Sin backend", "WhatsApp API"],
+    images: getProjectImages("dfrutamadre"),
+    impact: { value: "100%", label: "ventas directas" },
   }
 ];
 
@@ -108,8 +118,6 @@ const ProjectImageCarousel = ({ images, title }: { images: string[]; title: stri
           />
         ))}
       </div>
-
-      <div className="absolute inset-0 bg-gradient-to-t from-card/60 to-transparent pointer-events-none" />
     </div>
   );
 };
