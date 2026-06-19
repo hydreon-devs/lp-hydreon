@@ -29,7 +29,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const WHATSAPP_NUMBER = "573234519204";
+const WHATSAPP_NUMBER = "573132359756";
 
 type Project = ProjectData & { images: string[] };
 

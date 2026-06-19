@@ -6,7 +6,7 @@ const socialLinks = [
   {
     name: "WhatsApp",
     icon: <MessageCircle className="w-6 h-6" />,
-    href: "https://wa.me/573234519204",
+    href: "https://wa.me/573132359756",
     color: "hover:bg-green-500/20 hover:text-green-400 hover:border-green-500/50",
     description: "Escríbenos por WhatsApp",
   },

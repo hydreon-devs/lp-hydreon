@@ -91,7 +91,7 @@ const Navbar = () => {
           </div>
 
           {/* CTA Button */}
-          <a href="https://wa.me/573234519204" target="_blank" rel="noopener noreferrer" className="hidden md:block">
+          <a href="https://wa.me/573132359756" target="_blank" rel="noopener noreferrer" className="hidden md:block">
             <Button variant="hero" size="lg">
               Empezar Proyecto
             </Button>

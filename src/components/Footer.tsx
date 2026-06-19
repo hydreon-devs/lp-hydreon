@@ -23,7 +23,7 @@ const Footer = () => {
   };
 
   const socialLinks = [
-    { icon: <MessageCircle className="w-5 h-5" />, href: "https://wa.me/573234519204", label: "WhatsApp" },
+    { icon: <MessageCircle className="w-5 h-5" />, href: "https://wa.me/573132359756", label: "WhatsApp" },
     { icon: <Instagram className="w-5 h-5" />, href: "https://www.instagram.com/hydreon.co/", label: "Instagram" },
     { icon: <Linkedin className="w-5 h-5" />, href: "https://linkedin.com/company/hydreon", label: "LinkedIn" },
   ];
