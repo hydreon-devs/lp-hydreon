@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { ExternalLink, Layers, ChevronLeft, ChevronRight } from "lucide-react";
+import { projects as projectsData, type Project as ProjectData } from "@/data/projects";
 
 const portfolioImages = import.meta.glob("../assets/portfolio/**/*.{png,jpg,webp}", {
   eager: true,
@@ -30,38 +31,12 @@ import { cn } from "@/lib/utils";
 
 const WHATSAPP_NUMBER = "573234519204";
 
-interface Project {
-  title: string;
-  client: string;
-  shortDescription: string;
-  fullDescription: string;
-  tags: string[];
-  images: string[];
-  impact?: { value: string; label: string };
-}
+type Project = ProjectData & { images: string[] };
 
-const projects: Project[] = [
-  {
-    title: "Gestor de Cotizaciones",
-    client: "CJ Producciones",
-    shortDescription: "Sistema web para administración de cotizaciones y clientes.",
-    fullDescription:
-      "Desarrollamos una plataforma web completa de gestión de cotizaciones para el uso interno del equipo de CJ Producciones. La solución redujo en un 80% el tiempo administrativo del personal encargado en la creación de cotizaciones para sus clientes.",
-    tags: ["React", "Vite", "Supabase"],
-    images: getProjectImages("gestor-cotizaciones"),
-    impact: { value: "80%", label: "menos tiempo administrativo" },
-  },
-  {
-    title: "Landing Page + Mini App D'Fruta Madre",
-    client: "D'Fruta Madre - Fresas con crema",
-    shortDescription: "Landing page para la venta de fresas con crema.",
-    fullDescription:
-      "Desarrollamos una landing page + mini app para armar pedidos y enviar por WhatsApp. La landing page fue diseñada para ser una herramienta de venta directa para el cliente.",
-    tags: ["React", "Sin backend", "WhatsApp API"],
-    images: getProjectImages("dfrutamadre"),
-    impact: { value: "100%", label: "ventas directas" },
-  }
-];
+const projects: Project[] = projectsData.map((p) => ({
+  ...p,
+  images: getProjectImages(p.folder),
+}));
 
 const ProjectImageCarousel = ({ images, title }: { images: string[]; title: string }) => {
   const [api, setApi] = useState<CarouselApi>();
