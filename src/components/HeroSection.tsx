@@ -65,7 +65,7 @@ const HeroSection = () => {
         </p>
 
         <a
-          href="https://wa.me/573234519204"
+          href="https://wa.me/573132359756"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block animate-fade-in"
